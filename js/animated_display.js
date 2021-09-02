@@ -1,14 +1,20 @@
 let special_display = document.createElement('div');
+let display_container = document.createElement('div');
 
+display_container.classList.add("display-container")
 special_display.classList.add("clock-container")
 special_display.classList.add("special-display")
+special_display.setAttribute("update", "enabled")
+special_display.id = `clock_no_${parseInt(document.querySelector(".display-wrapper").lastElementChild.lastElementChild.id.replace("clock_no_", "")) + 1}`
 
-for (let i = 0; i < 7; i++) {
+display_container.id = `display_no_${document.querySelector(".display-wrapper").childElementCount + 1}`
+for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 6; j++) {
         special_display.innerHTML += clock_struct
     }
 }
-document.querySelector(".clock-wrapper").appendChild(special_display)
+display_container.appendChild(special_display)
+document.querySelector(".display-wrapper").appendChild(display_container)
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
@@ -20,18 +26,18 @@ async function heartbeat() {
         c = 0
         special_display.querySelectorAll(".hand-wrapper").forEach(hand => {
             hand.animate([{
-                transform: `rotate(${heart[x][c]}deg)`
+                transform: `rotate(${(special_display.getAttribute("update") === "enabled") ? heart[x][c] : 0}deg)`
             }], {
-                duration: property.heart_animation.speed,
+                duration: property.data.special.speed,
                 easing: "cubic-bezier(0,.38,.13,1.13)",
                 fill: "forwards"
             })
             c += 1
         })
-        await sleep(property.heart_animation.pause)
+        await sleep(property.data.special.pause)
 
     }
-    if (heartbeat_counter < property.heart_animation.limit) {
+    if (heartbeat_counter < property.data.special.limit) {
         heartbeat()
         heartbeat_counter += 1
     } else {
@@ -46,18 +52,18 @@ async function arrow_down() {
         c = 0
         special_display.querySelectorAll(".hand-wrapper").forEach(hand => {
             hand.animate([{
-                transform: `rotate(${arrow[x][c]}deg)`
+                transform: `rotate(${(special_display.getAttribute("update") === "enabled") ? arrow[x][c] : 0}deg)`
             }], {
-                duration: property.arrow_animation.speed,
+                duration: property.data.special.speed / 2,
                 easing: "cubic-bezier(0,.38,.13,1.13)",
                 fill: "forwards"
             })
             c += 1
         })
-        await sleep(property.arrow_animation.pause)
+        await sleep(property.data.special.pause)
 
     }
-    if (arrow_counter < property.arrow_animation.limit) {
+    if (arrow_counter < property.data.special.limit) {
         arrow_down()
         arrow_counter += 1
     } else {
@@ -65,4 +71,4 @@ async function arrow_down() {
         heartbeat()
     }
 }
-heartbeat()
+arrow_down()

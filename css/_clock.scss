@@ -1,10 +1,18 @@
-.clock-wrapper {
+.display-wrapper {
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: repeat(4, 5fr);
-    grid-template-rows: repeat(2, 5fr);
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(2, auto);
     width: 100%;
-    max-width: 864pt;
+    height: min-content;
+    max-width: 720pt;
+    // display: none;
+}
+
+.display-container {
+    width: auto;
+    height: min-content;
+    display: flex;
 }
 
 .clock-container {
@@ -15,10 +23,7 @@
 }
 
 .special-display {
-    margin-top: var(--padding);
-    margin-left: var(--padding);
-    transform: translateX(calc(var(--padding)*0.5));
-    grid-template-columns: repeat(calc(var(--cols)*2 - 1), 25%);
+    grid-template-columns: repeat(calc(var(--cols)*2), calc(100%/var(--cols)/2));
 }
 
 #feFlood1752 {
@@ -30,11 +35,15 @@
 }
 
 #stop8360 {
-    stop-color: var(--clock-grad-a);
+    stop-opacity: 1;
+    offset: 0;
+    stop-color: var(--top-gradient);
 }
 
 #stop8362 {
-    stop-color: var(--clock-grad-b);
+    offset: 1;
+    stop-opacity: 1;
+    stop-color: var(--bottom-gradient);
 }
 
 .clock-body {
@@ -60,7 +69,7 @@
 }
 
 .hand {
-    fill: var(--primary);
+    fill: var(--primary-color);
     transform: translateX(calc(0pt - var(--stroke-width)));
     height: calc(50% + var(--stroke-width));
     x: 50%;
